@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>ORBITTAS - Desarrollo de control y sistemas IOT.</title>
+	<meta name="description" content="Desarrollo de control y sistemas IOT." />
+	<link href="https://fonts.googleapis.com/css?family=Comfortaa:400,600&display=swap" rel="stylesheet" />
+	<link rel="icon" href="../img/favicon.png" type="image/png" />
+  {{ style('css/jquery-ui.css') }}
+  {{ style('css/bootstrap.min.css') }}
+  {{ style('css/main.rds.css') }}
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row no-gutters">
+			<header class="col-12 Header Header" id="header">
+				<div class="responsive">
+                    
+					<figure>
+						<a href="/"><img class="img-fluid" src="../img/logo-largo.png" alt="Orbittas" /></a>
+					</figure>
+					<button class="burger" id="burger"><span class="fa fa-bars"></span></button>
+
+				</div>
+				@include('partials.nav_dashboard')
+			</header>
+    @include('partials.dashboard_main')
+    </div> 
+  </div> 
+  <div class="modal fade" id="sensor-history" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLongTitle">Sensor <span id="sensor"></span></h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+
+													<div id="curve_chart" style="width: 100%"></div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+												</div>
+											</div>
+										</div>
+							</div>
+							<div class="modal fade" id="shutdown-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Advertencia</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p>¿Está seguro qué desea apagar todo y no apagar una salida en particular?</p>
+										</div>
+										<div class="modal-footer">
+                      <button class="btn btn-success px-3" id="si" data-dismiss="modal">Si</button> 
+                      <button class="btn btn-danger px-3" data-dismiss="modal">No</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+              <div class="modal fade" id="automatico-single" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Configuración</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="auto_modo">
+                         {{--     
+                         <?php
+                            // include('conexion.php');
+                            // $con = mysqli_query($enlace, 'SELECT * FROM nuevo_horario ORDER BY fecha DESC LIMIT 1 ');
+                            // $row = mysqli_fetch_assoc($con);
+                            $hor = "pm";
+                            // $con2 = mysqli_query($enlace, 'SELECT * FROM `dia_activacion` ORDER BY `dia_activacion`.`id` DESC LIMIT 1 ');
+                            $progd = array(
+                                "d1" => ["", "", "", "", "", "", ""],
+                                "d2" => ["", "", "", "", "", "", ""],
+                                "d3" => ["", "", "", "", "", "", ""],
+                                "d4" => ["", "", "", "", "", "", ""],
+                                "d5" => ["", "", "", "", "", "", ""],
+                                "d6" => ["", "", "", "", "", "", ""],
+                                "d7" => ["", "", "", "", "", "", ""],
+                                "d8" => ["", "", "", "", "", "", ""],
+                            );
+                            if (1) {
+            
+            
+                                for ($i = 0; $i < 7; $i++) {
+            
+                                    for ($j = 1; $j < 9; $j++) {
+            
+            
+                                        $progd['d' . $j][$i] = '';
+                                    }
+                                }
+                            }
+            
+                            ?>  
+                            --}}
+                            <div class="alert alert-warning">
+                                <p>Seleccione la cantidad de horarios a configurar y use el boton de activar al terminar de configurar el ultimo ciclo</p>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="horarios">Número de horarios</label>
+                                    <select class="form-control" id="horarios">
+                                        <option value='0' selected>seleccione</option>
+                                        <option value='1'>1</option>
+                                        <option value='2'>2</option>
+                                        <option value='3'>3</option>
+                                        <option value='4'>4</option>
+                                        <option value='5'>5</option>
+                                        <option value='6'>6</option>
+                                        <option value='7'>7</option>
+                                        <option value='8'>8</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" data-toggle="tab" href="#modulo-1" role="tab" aria-selected="true" id="horar1">Horario 1</a>
+                                <a class="nav-item nav-link" data-toggle="tab" href="#modulo-2" role="tab" aria-selected="false" id="horar2">Horario 2</a>
+                                <a class="nav-item nav-link" data-toggle="tab" href="#modulo-3" role="tab" aria-selected="false" id="horar3">Horario 3</a>
+                                <a class="nav-item nav-link" data-toggle="tab" href="#modulo-4" role="tab" aria-selected="false" id="horar4">Horario 4</a>
+                                <a class="nav-item nav-link" data-toggle="tab" href="#modulo-5" role="tab" aria-selected="false" id="horar5">Horario 5</a>
+                                <a class="nav-item nav-link" data-toggle="tab" href="#modulo-6" role="tab" aria-selected="false" id="horar6">Horario 6</a>
+                                <a class="nav-item nav-link" data-toggle="tab" href="#modulo-7" role="tab" aria-selected="false" id="horar7">Horario 7</a>
+                                <a class="nav-item nav-link" data-toggle="tab" href="#modulo-8" role="tab" aria-selected="false" id="horar8">Horario 8</a>
+                            </div>
+                            <div id="contenido">
+            
+            
+            <div class="tab-content" id="nav-tabContent">
+                                
+                                
+                             
+                                @each(i in range(1,9))
+            
+                                        @if(i==1) 
+                                            <div class="tab-pane fade show active" id="modulo-{{i}}" role="tabpanel">
+                                        @else 
+                                        <div class="tab-pane fade" id="modulo-{{i}}" role="tabpanel">
+                                        @endif
+                                    
+                                    
+                                    <form class="form-row" id="blocked{{i}} ">
+                                     
+                                    <div class="form-group col-md-12">
+                                    <h4> {{i}} º Ciclo
+                                    
+                                    <span class="badge badge-danger">Inactivo</span></h4>
+                                    
+                                    <h5>Hora Inicio</h5>
+                                    </div>
+            
+                                    
+                                    <div class="form-group col-md-3">
+                                    <label for="hora{{i}}">Hora</label>
+                                    <select class="form-control" id="hora{{i}}">
+                                      @each(ii in range(1,13))
+                                        
+                                    <option value='{{ii}}' >{{ii}}</option>
+                                        
+                                    @endeach
+                                     </select>
+                                    </div>
+            
+                                    <div class="form-group col-md-3">
+                                    <label for="min{{i}}">Minutos</label>
+                                    <select class="form-control" id="min{{i}}">
+            
+                                        @each(iii in range(0,60))
+                                            <option value='{{iii}}' >{{iii}}</option>
+                                        @endeach
+                                    
+            
+                                    </select>
+                                    </div>
+                                    
+                                    <div class="form-group col-md-3">
+                                    <label for="hor{{i}}">AM / PM</label>
+                                    <select class="form-control" id="hor{{i}}">
+                                   {{--  
+                                      if ($hor == "am") {
+                                        echo "<option value='am' selected>AM</option>";
+                                        echo "<option value='pm'>PM</option>";
+                                    } else {
+                                        echo "<option value='am'>AM</option>";
+                                        echo "<option value='pm' selected>PM</option>";
+                                    }
+                                      --}}
+                                      <option value='am'>AM</option>
+                                      <option value='pm' selected>PM</option>
+                                    </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                    <h5>Hora Fin</h5>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                    <label for="horaFin{{i}}">Hora</label>
+                                    <select class="form-control" id="horaFin{{i}}">
+
+                                   
+                                        @each(ii in range(1,13))
+                                        <option value='{{ii}}' >{{ii}}</option>
+                                        @endeach
+                                          
+                                        
+                                    
+            
+                                     </select>
+                                    </div>
+            
+                                    <div class="form-group col-md-3">
+                                    <label for="minFin{{i}}">Minutos</label>
+                                    <select class="form-control" id="minFin{{i}}">
+            
+                                        
+                                      @each(iii in range(0,60))
+                                      <option value='{{iii}}' >{{iii}}</option>
+                                      @endeach
+                                      
+                                    
+            
+                                    </select>
+                                    </div>
+                                    
+                                   <div class="form-group col-md-3">
+                                   <label for="horfin{{i}}">AM / PM</label>
+                                    <select class="form-control" id="horfin{{i}}">
+                                   {{--   
+                                    if ($hor == "am") {
+                                        echo "<option value='am' selected>AM</option>";
+                                        echo "<option value='pm'>PM</option>";
+                                    } else {
+                                        echo "<option value='am'>AM</option>";
+                                        echo "<option value='pm' selected>PM</option>";
+                                    }  
+                                    --}}
+                                    <option value='am'>AM</option>
+                                    <option value='pm' selected>PM</option>
+                                    </select>
+                                  </div>
+            
+                                    <div class="zone2">
+                                    
+                                    <h5>Días de activación</h5>
+                                  <div class="radio">
+                                    <input id="radio-d{{i}}-1" name="radio" type="checkbox" class="uno1"
+                                    {{--  echo $progd['d' . $i][0];  --}}
+                                    >
+                                    <label for="radio-d{{i}}-1" class="radio-label">Domingo</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-d{{i}}-2" name="radio" type="checkbox" class="dos2"
+                                    {{--  echo $progd['d' . $i][1];  --}}
+                                    >
+                                    <label for="radio-d{{i}}-2" class="radio-label">Lunes</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-d{{i}}-3" name="radio" type="checkbox" class="tres3"
+                                    {{--  echo $progd['d' . $i][2];  --}}
+                                    >
+                                    <label for="radio-d{{i}}-3" class="radio-label">Martes</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-d{{i}}-4" name="radio" type="checkbox" class="cuatro4"
+                                    {{--  echo $progd['d' . $i][3];  --}}
+                                    >
+                                    <label for="radio-d{{i}}-4" class="radio-label">Miercoles</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-d{{i}}-5" name="radio" type="checkbox" class="cinco5"
+                                    {{--  echo $progd['d' . $i][4];  --}}
+                                    >
+                                    <label for="radio-d{{i}}-5" class="radio-label">Jueves</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-d{{i}}-6" name="radio" type="checkbox" class="seis6"
+                                    {{--  echo $progd['d' . $i][5];  --}}
+                                    >
+                                    <label for="radio-d{{i}}-6" class="radio-label">Viernes</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-d{{i}}-7" name="radio" type="checkbox" class="siete7"
+                                    {{--  echo $progd['d' . $i][6];  --}}
+                                    >
+                                    <label for="radio-d{{i}}-7" class="radio-label">Sábado</label>
+                                    </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="zone2">
+                                    
+                                    <h5>Salidas</h5>
+                                    <div class="radio">
+                                    <input id="radio-v{{i}}-1" name="radio" type="checkbox" class="uno1"
+                                    {{--  echo $progd['v' . $i][0];  --}}
+                                    >
+                                    <label for="radio-v{{i}}-1" class="radio-label">1</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-v{{i}}-2" name="radio" type="checkbox" class="dos2"
+                                    {{--  echo $progd['v' . $i][1];  --}}
+                                    >
+                                    <label for="radio-v{{i}}-2" class="radio-label">2</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-v{{i}}-3" name="radio" type="checkbox" class="tres3"
+                                    {{--  echo $progd['v' . $i][2];  --}}
+                                    >
+                                    <label for="radio-v{{i}}-3" class="radio-label">3</label>
+                                    </div>
+                                    <div class="radio">
+                                    <input id="radio-v{{i}}-4" name="radio" type="checkbox" class="cuatro4"
+                                    {{--  echo $progd['v' . $i][3];  --}}
+                                    >
+                                    <label for="radio-v{{i}}-4" class="radio-label">4</label>
+                                    </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    </form>
+                                    <div class="row">
+                                    <div class="col">
+            
+                                    <button class="btn btn-danger mx-auto d-block" id="editar{{i}}">Editar Ciclo</button>
+                                    </div>
+                                  <div class="col">                  
+                                  <button type="submit" class="btn btn-primary mx-auto d-block" data-dismiss="modal" id="activar{{i}}">Activar Horario</button>
+                                    </div> 
+                                    </div>
+                                    </div>
+                                    
+                                    @endeach
+                                 
+            
+                                <!--<div class="tab-pane fade" id="modulo-2" role="tabpanel"> -->
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+            </div>
+</div>
+
+              {{script('js/jquery-3.1.1.min.js')}}
+              {{script('js/jquery-ui.min.js')}}
+              {{script('js/highstock.js')}}
+              {{script('js/exporting.js')}}
+              {{script('js/app.js')}}
+              {{script('js/llamada.js')}}
+              {{script('js/jquery.minicolors.min.js')}}
+              {{script('js/mqttws31.js')}}
+              {{script('js/encoder.js')}}
+              {{script('js/popper.min.js')}}
+              {{script('js/bootstrap.min.js')}}
+              {{script('js/sweetalert.min.js')}}
+              {{script('js/scroll.js')}}
+              {{script('js/main.rds.js')}}
+							<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.3.1/lodash.min.js"></script>
+							<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+							<script src="https://kit.fontawesome.com/40b9eacf31.js" crossorigin="anonymous"></script> <!--icono de barras-->
+
+							<script>
+								var objFoto = new Image();
+								objFoto.src = '../img/modo-valvula-activa.png'
+							</script>
+
+
+
+              {{script('config.js')}}
+</body>
+
+</html>

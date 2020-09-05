@@ -1,0 +1,25 @@
+@layout('layout.app')
+
+@section('content')
+<div class="h-100 w-100 row justify-content-center align-items-center">
+  <div class="col-6">
+    @include('layout.notification')
+    <h1>Please select a device to delete</h1>
+    <div>
+       <form action="/deleteDevice" method="post">
+      {{ csrfField() }}
+      <select name="deviceSelected" id="deviceSelector">
+      @each(device in devices)
+      <option value="{{device.mac_address}}">{{device.mac_address}} - {{device.description}}</option>
+      @endeach
+    </select>
+    <br>
+    <button class="btn btn-primary btn-block" type="submit">Delete</button>
+    </form>
+    </div>
+   <br>
+    <a href="/" class="btn btn-secondary">Go Back</a>
+  </div>
+</div>
+
+@endsection

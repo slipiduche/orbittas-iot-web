@@ -1,0 +1,29 @@
+@layout('layout.app')
+
+@section('content')
+
+<div class="h-100 w-100 row justify-content-center align-items-center">
+  <div class="col-6">
+    @include('layout.notification')
+    <h1 class="text-center">Please register the device ID</h1>
+    <div>
+      <form action="/test/devices/store" method="POST">
+        {{ csrfField() }}
+        <div class="form-group">
+        <input name="mac_address" class="form-control" placeholder="Mac Address" value="{{old('mac_address','')}}">
+        </div>
+        <div class="form-group">
+          <input name="description" class="form-control" placeholder="Description of Device" value="{{old('description','')}}">
+          </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block">
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+    <a href="/" class="btn btn-secondary">Go Back</a>
+  </div>
+</div>
+
+@endsection

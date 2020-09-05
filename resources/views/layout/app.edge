@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ORBITTAS - Desarrollo de control y sistemas IOT.</title>
+  <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,600&display=swap" rel="stylesheet" />
+	<link rel="icon" href="../img/favicon.png" type="image/png" />
+  {{ style('css/jquery-ui.css') }}
+  {{ style('css/bootstrap.min.css') }}
+  {{ style('css/main.rds.css') }}
+</head>
+<body>
+
+  <div class="container-fluid">
+		<div class="row no-gutters">
+			<header class="col-12 Header Header fixed-top" id="header">
+				<div class="responsive">
+
+					<figure>
+            <a href="/">
+              <img class="img-fluid" src="../img/logo-largo.png" alt="Orbittas" />
+            </a>
+					</figure>
+					<button class="burger" id="burger"><span class="fa fa-bars"></span></button>
+
+				</div>
+        <nav id="nav">
+          <ul class="Nav-main" id="menu">
+      
+            <li class="Nav-submenu d-none d-sm-block">
+              <ul id="menu2">
+        
+                @loggedIn
+                <form action="/api/logout" method="POST" id="formLogOut">
+                  {{ csrfField() }}
+                </form>
+                <li>
+                  
+                  <a href="" onclick="event.preventDefault(); document.getElementById('formLogOut').submit()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <br>
+                    LogOut
+                  </a>
+             
+                </li>
+                @else
+                <li>
+                  <a href="/signup" >
+                    <i class="fas fa-user-plus"></i> 
+                    <br> 
+                    Sign up
+                  </a>
+              
+                </li>
+                <li>
+                  <a href="/login" >
+                    <i class="fas fa-sign-in-alt"></i> 
+                    <br> 
+                    LogIn
+                  </a>
+                </li>
+                @endloggedIn
+              </ul>
+            </li>
+      
+      
+            <li class="Nav-submenu d-block d-sm-none">
+              <ul>
+        
+                @loggedIn
+                <form action="/api/logout" method="POST" id="formLogOut">
+                  {{ csrfField() }}
+                </form>
+                <li>
+                 
+                  <a href="" onclick="event.preventDefault(); document.getElementById('formLogOut').submit()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <br>
+                    LogOut
+                  </a>
+                  
+                </li>
+                @else
+                <li>
+                  <a href="/signup" >
+                    <i class="fas fa-user-plus"></i> <br> Sign up
+                  </a>
+              
+                </li>
+                <li>
+                  <a href="/login" >
+                    <i class="fas fa-sign-in-alt"></i> <br> LogIn
+                  </a>
+                </li>
+                @endloggedIn
+              </ul>
+            </li>
+          </ul>
+      </nav>
+      </header>
+      <main class="col-12 Main" id="Inicio">
+  
+        <div class="Dashboard">
+            <div class="container">
+                
+                 @!section('content')
+               
+            </div>
+        </div>
+      
+      
+      
+        <div class="Footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <p>ORBITTAS 2020 </p>
+                        <p>
+                          <a href=https://www.orbittas.com>www.orbittas.com </a> 
+                        </p> 
+                    </div> 
+                  </div> 
+              </div> 
+          </div> 
+      </main>
+      
+    </div> 
+  </div> 
+
+
+
+  {{script('js/jquery-3.1.1.min.js')}}
+  {{script('js/jquery-ui.min.js')}}
+  {{script('js/highstock.js')}}
+  {{script('js/exporting.js')}}
+  {{script('js/app.js')}}
+  {{script('js/jquery.minicolors.min.js')}}
+  {{script('js/mqttws31.js')}}
+  {{script('js/encoder.js')}}
+  {{script('js/popper.min.js')}}
+  {{script('js/bootstrap.min.js')}}
+  {{script('js/sweetalert.min.js')}}
+  {{script('js/scroll.js')}}
+  {{script('js/main.rds.js')}}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.3.1/lodash.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+	<script src="https://kit.fontawesome.com/40b9eacf31.js" crossorigin="anonymous"></script> <!--icono de barras-->
+  
+</body>
+</html>

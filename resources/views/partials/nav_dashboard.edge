@@ -1,0 +1,80 @@
+<nav id="nav">
+    <ul class="Nav-main" id="menu">
+
+        <li class="Nav-submenu d-none d-sm-block">
+          <ul id="menu2">
+            <li>
+              <a href="#Inicio" id="autom" data-toggle="modal" data-target="#automatico-single"><span class="icon automatico"></span>
+                    Automático
+                </a>
+            </li>
+            <li>
+              <a href="#Inicio" id="manualv"><span class="icon manual"></span>
+                Manual
+              </a>
+            </li>
+              @loggedIn
+              <form action="/api/logout" method="POST" id="formLogOut">
+                {{ csrfField() }}
+              </form>
+                            <li>
+                              <a href="" onclick="event.preventDefault(); document.getElementById('formLogOut').submit()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <br>
+                                LogOut
+                              </a>
+                            </li>
+                            @else
+                            <li>
+                              <a href="/signup" >
+                                <i class="fas fa-user-plus"></i> 
+                                <br> 
+                                Sign up
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/login" >
+                                <i class="fas fa-sign-in-alt"></i> 
+                                <br> 
+                                LogIn
+                              </a>
+                            </li>
+                            @endloggedIn
+            </ul>
+          </li>
+        <li class="Nav-submenu d-block d-sm-none">
+          <ul>
+  
+            <li><a href="#Inicio" data-toggle="modal" id="autom" data-target="#automatico-single"><span class="icon automatico"></span>Automático</a></li>
+            <li><a href="#Inicio" id="manualv"><span class="icon manual"></span>Manual</a></li>
+            @loggedIn
+            <form action="/api/logout" method="POST" id="formLogOut">
+              {{ csrfField() }}
+            </form>
+                          <li>
+                            <a href="" onclick="event.preventDefault(); document.getElementById('formLogOut').submit()">
+                              <i class="fas fa-sign-out-alt"></i>
+                              <br>
+                              LogOut
+                            </a>
+                          </li>
+                          @else
+                          <li>
+                            <a href="/signup" >
+                              <i class="fas fa-user-plus"></i> 
+                              <br> 
+                              Sign up
+                            </a>
+                          </li>
+                          <li>
+                            <a href="/login" >
+                              <i class="fas fa-sign-in-alt"></i> 
+                              <br> 
+                              LogIn
+                            </a>
+                          </li>
+                          @endloggedIn
+            </ul>
+          </li>
+      </ul>
+</nav>
