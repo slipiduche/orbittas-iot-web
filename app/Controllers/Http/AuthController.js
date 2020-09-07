@@ -400,6 +400,7 @@ class AuthController {
       "message": "Conectado.",
       "user":user.email,
       "userId":user.id,
+      "firstName":user.first_name,
       "dispositivos":devices
 
     };
@@ -457,6 +458,7 @@ class AuthController {
       "message": "Conectado.",
       "user":user.email,
       "userId":user.id,
+      "firstName":user.first_name,
       "token":token,
 
     };
