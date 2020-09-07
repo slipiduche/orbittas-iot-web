@@ -41,6 +41,7 @@ const namedMiddleware = {
   auth: "Adonis/Middleware/Auth",
   guest: "Adonis/Middleware/AllowGuestOnly",
   authenticated: "App/Middleware/Authenticated",
+  deviceAuth: "App/Middleware/DeviceAuth"
 };
 
 /*

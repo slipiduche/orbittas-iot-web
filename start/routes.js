@@ -64,3 +64,10 @@ Route.group(() => {
 })
   .prefix("test/")
   .middleware(["auth"]);
+  Route.group(() => {
+   
+    Route.post("deviceStore", "DeviceController.deviceStore");
+    Route.delete("deviceDestroy", "DeviceController.deviceDestroy");
+  })
+    .prefix("api/")
+    .middleware("deviceAuth");

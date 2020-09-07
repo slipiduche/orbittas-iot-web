@@ -71,8 +71,9 @@ class DeviceController {
     }
   }
   async deviceStore({ request, response, params, session }) {
-    const { mac_address, description } = request.post();
-    const user = await User.findBy("id", auth.user.id);
+    const { mac_address, description, userId} = request.all();
+    console.log(userId);
+    const user = await User.findBy("id", userId);
     try {
       await user.devices().create({ mac_address, description });
       return {
@@ -141,9 +142,11 @@ class DeviceController {
    * @param {Response} ctx.response
    */
   async deviceDestroy({ params, request, response, auth, session }) {
-    const user = await User.findBy("id", auth.user.id);
+    console.log(params.userId);
+    const { mac_address, description, userId} = request.all();
+    const user = await User.findBy("id", userId);
     try {
-      await user.devices().where("mac_address", params.mac_address).delete();
+      await user.devices().where("mac_address", mac_address).delete();
       return {
       
         "Error": false,

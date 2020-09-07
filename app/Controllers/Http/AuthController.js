@@ -399,6 +399,7 @@ class AuthController {
       "Error": false,
       "message": "Conectado.",
       "user":user.email,
+      "userId":user.id,
       "dispositivos":devices
 
     };
@@ -455,6 +456,7 @@ class AuthController {
       "Error": false,
       "message": "Conectado.",
       "user":user.email,
+      "userId":user.id,
       "token":token,
 
     };
