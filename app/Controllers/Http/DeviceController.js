@@ -140,6 +140,25 @@ class DeviceController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
+  async deviceDestroy({ params, request, response, auth, session }) {
+    const user = await User.findBy("id", auth.user.id);
+    try {
+      await user.devices().where("mac_address", params.mac_address).delete();
+      return {
+      
+        "Error": false,
+        "message": "Eliminado",
+          
+      };
+    } catch (error) {
+      return {
+      
+        "Error": true,
+        "message": error.code,
+          
+      };
+    }
+  }
   async destroy({ params, request, response, auth, session }) {
     const user = await User.findBy("id", auth.user.id);
     try {
