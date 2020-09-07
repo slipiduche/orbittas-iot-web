@@ -70,6 +70,35 @@ class DeviceController {
         });
     }
   }
+  async deviceStore({ request, response, params, session }) {
+    const { mac_address, description } = request.post();
+    const user = await User.findBy("id", auth.user.id);
+    try {
+      await user.devices().create({ mac_address, description });
+      return {
+      
+        "Error": false,
+        "message": "Almacenado",
+          
+      };
+    } catch (error) {
+      session.withErrors([{ mac_address }]).flashAll();
+      if (error.code == "ER_DUP_ENTRY")
+        return {
+      
+          "Error": true,
+          "message": "chipId existente",
+            
+        };
+      else
+        return {
+      
+          "Error": true,
+          "message": error.code,
+            
+        };
+    }
+  }
 
   /**
    * Display a single device.
