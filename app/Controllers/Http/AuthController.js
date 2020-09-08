@@ -357,13 +357,12 @@ class AuthController {
       }
     );
   }
-  async confirmDevice({ response, request, session,params }) {
-    let token  = request.input("token");
+  async confirmDevice({ response, request, session, params }) {
+    let token = request.input("token");
     console.log(params);
     console.log(token);
-    if(token==null)
-    {
-      token =params["token"];
+    if (token == null) {
+      token = params["token"];
     }
     console.log(token);
     let payload;
@@ -392,16 +391,16 @@ class AuthController {
         builder.wherePivot("user_id", user.id);
       })
       .fetch();
-   
-    
+
+
 
     return {
       "Error": false,
       "message": "Conectado.",
-      "user":user.email,
-      "userId":user.id,
-      "firstName":user.first_name,
-      "dispositivos":devices
+      "user": user.email,
+      "userId": user.id,
+      "firstName": user.first_name,
+      "dispositivos": devices
 
     };
   }
@@ -451,15 +450,15 @@ class AuthController {
     const token = jwt.sign({ email: user.email, }, Env.get("SECRET"), {
       expiresIn: 60 * 60 * 24 * 3,
     });
-     console.log(token);
+    console.log(token);
     return {
-      
+
       "Error": false,
       "message": "Conectado.",
-      "user":user.email,
-      "userId":user.id,
-      "firstName":user.first_name,
-      "token":token,
+      "user": user.email,
+      "userId": user.id,
+      "firstName": user.first_name,
+      "token": token,
 
     };
   }
@@ -517,6 +516,40 @@ class AuthController {
       "Error": false,
       "message": "Confirma tu cuenta"
     };
+
+  }
+  async deviceUserUpdate({ session, request, response }) {
+
+   console.log(request.input("email"));
+    const user = await User.findBy("email", request.input("email"));
+    if (user) {
+      
+      const nombre=request.input("firstName");
+      console.log(nombre);
+      user.first_name=nombre;
+      try {
+        
+        await user.save();
+        console.log(user.first_name);
+        return {
+          "Error": false,
+          "message": "Usuario actualizado"
+        };
+
+      } catch (error) {
+        return {
+          "Error": true,
+          "message": "error procesando"
+        };
+
+      }
+
+    }
+    else
+      return {
+        "Error": true,
+        "message": "No se logro actualizar no existe el usuario"
+      };
 
   }
 }
