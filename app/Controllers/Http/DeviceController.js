@@ -131,7 +131,28 @@ class DeviceController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {}
+  async deviceUpdate({ params, request, response, auth, session }) {
+    console.log(params.userId);
+    const { mac_address, description, userId, deviceId} = request.all();
+    const user = await User.findBy("id", userId);
+    
+    try {
+      await user.devices().where("id", deviceId).update({ "mac_address":mac_address,"description":description  });
+      return {
+      
+        "Error": false,
+        "message": "Actualizado",
+          
+      };
+    } catch (error) {
+      return {
+      
+        "Error": true,
+        "message": error.code,
+          
+      };
+    }
+  }
 
   /**
    * Delete a device with id.

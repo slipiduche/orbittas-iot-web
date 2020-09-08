@@ -68,6 +68,7 @@ Route.group(() => {
    
     Route.post("deviceStore", "DeviceController.deviceStore");
     Route.delete("deviceDestroy", "DeviceController.deviceDestroy");
+    Route.put("deviceUpdate","DeviceController.deviceUpdate");
   })
     .prefix("api/")
     .middleware("deviceAuth");
