@@ -80,6 +80,59 @@ class AuthController {
       }
     );
   }
+  async deviceSendResetEmail({ request, response, session }) {
+    const validation = await validate(request.all(), {
+      email: "required|email",
+    });
+
+    if (validation.fails()) {
+      session.withErrors(validation.messages()).flashAll();
+      return {
+        "Error": true,
+        "message": "Email requerido",
+
+      };
+    }
+
+    const user = await User.findBy("email", request.input("email"));
+    if (!user) {
+      return {
+        "Error": true,
+        "message": "Usuario no existe",
+
+      };
+    }
+
+    await PasswordReset.query().where("email", user.email).delete();
+
+    const token = jwt.sign({ email: user.email }, Env.get("SECRET"), {
+      expiresIn: 60 * 60 * 24 * 3,
+    });
+
+    await PasswordReset.create({
+      email: user.email,
+      token,
+    });
+
+    const params = {
+      ...user.toJSON(),
+      token,
+      appUrl: Env.get("APP_URL"),
+    };
+
+    await Mail.send("emails.reset_password", params, (message) => {
+      message
+        .to(user.email)
+        .from(Env.get("FROM_EMAIL"))
+        .subject("Reset Your Password!");
+    });
+
+    return {
+      "Error": false,
+      "message": "Verifica en tu correo para resetear tu contraseña",
+
+    };
+  }
 
   async sendResetEmail({ request, response, session }) {
     const validation = await validate(request.all(), {

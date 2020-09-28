@@ -50,6 +50,7 @@ Route.group(() => {
   Route.post("login", "AuthController.login");
   Route.post("logout", "AuthController.logout");
   Route.post("password/reset/email", "AuthController.sendResetEmail");
+  Route.post("device/password/reset/email", "AuthController.deviceSendResetEmail");
   Route.post("password/reset", "AuthController.resetPassword");
   Route.get("confirm/:token", "AuthController.confirmAccount");
   Route.post("confirmDevice", "AuthController.confirmDevice");
