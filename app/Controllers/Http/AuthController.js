@@ -98,7 +98,7 @@ class AuthController {
     if (!user) {
       return {
         "Error": true,
-        "message": "Usuario no existe",
+        "message": "El usuario no existe",
 
       };
     }
@@ -129,7 +129,7 @@ class AuthController {
 
     return {
       "Error": false,
-      "message": "Verifica en tu correo para resetear tu contraseña",
+      "message": "Verifica en tu correo para restablecer tu contraseña",
 
     };
   }
